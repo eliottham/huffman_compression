@@ -30,6 +30,7 @@ class HCTree {
 private:
     HCNode* root;
     vector<HCNode*> leaves;
+    void deleteAll(HCNode* node);
 
 public:
     // explicit keyword is used to avoid accidental implicit conversions
@@ -84,6 +85,5 @@ public:
 
 
 };
- bool pq_compare(HCNode* node1, HCNode* node2);
 
 #endif // HCTREE_H

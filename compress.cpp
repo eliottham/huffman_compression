@@ -14,15 +14,10 @@ int main(int argc, char* argv[]){
 
   //TODO:Check for if file contains only one character repeated many times
   
-  int nextByte;
- 
-  //vector to hold the frequencies of each byte
-  vector<int> freqs(256, 0);
-
-  //open the contents of the file infile and outfile 
+  //open the infile to read the contents 
   ifstream infile;
   infile.open(argv[1], ios::binary);
-
+/*
   //empty file check
   infile.seekg(0,ios::end);
   if(infile.tellg() == 0) {
@@ -35,17 +30,18 @@ int main(int argc, char* argv[]){
     cerr << "File does not exist!" << endl;
     return -1;
   }
- 
-  ofstream outfile;
-  outfile.open(argv[2], ios::binary);
-
-  //construct a huffman code for the contents of that file 
+*/ 
+  //construct a huffman code tree for the contents of that file 
   HCTree* hct = new HCTree();
 
+  vector<int> freqs(256, 0); //vector to hold frequencies of each byte
+  byte nextChar; //variable to hold the byte read in
+  int nextByte; //variable to check eof
+
   //read the contents of infile, count the number of occurrences of each byte file
-  while(infile.good()) {
-    nextByte = (int) infile.get();
-    freqs[nextByte]++;
+  while((nextByte = infile.get()) != EOF) {
+    nextChar = (unsigned char) nextByte;
+    freqs[nextChar]++;
   }
 
   //close the file
@@ -54,21 +50,26 @@ int main(int argc, char* argv[]){
   //construct the Huffman coding tree
   hct->build(freqs);
 
+  //open the output file for writing
+  ofstream outfile;
+  outfile.open(argv[2]);
+  
   //write the file header to the output file
   for(unsigned int i = 0; i < freqs.size(); i++){
     outfile << freqs[i] << endl;
+    //outfile.write((char*) &freqs[i], sizeof(freqs[i]));
   }
 
   //translate each byte from input file into its code and append to outfile
   infile.open(argv[1], ios::binary);
-  
-  while(infile.good()) {
-    hct->encode(infile.get(), outfile);
+ 
+  while((nextByte = infile.get()) != EOF) {
+    nextChar = (unsigned char) nextByte;
+    hct->encode(nextChar, outfile); //write the encoded byte to the outfile
   }
 
   //close the input and output files
   infile.close();
   outfile.close();
-
 
 }

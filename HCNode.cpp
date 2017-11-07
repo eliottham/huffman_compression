@@ -3,10 +3,8 @@ using namespace std;
 
 // Overload the less-than operator for HCNode
 bool HCNode::operator<(const HCNode& other){
-  if(this.count == other.count) {
-    return this.symbol < other.symbol;
+  if(this->count != other.count) {
+    return this->count > other.count;
   }
-  else {
-    return this.count < other.symbol;
-  }
+  return this->symbol < other.symbol;
 }
