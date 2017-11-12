@@ -75,7 +75,7 @@ public:
      *  PRECONDITION: build() has been called, to create the coding
      *  tree, and initialize root pointer and leaves vector.
      */
-    void decode(BitInputStream& in, ofstream& out) const;
+    void decode(BitInputStream& in, ofstream& out, int sigBits) const;
 
     /** Return the symbol coded in the next sequence of bits (represented as 
      *  ASCII text) from the ifstream.
@@ -84,10 +84,7 @@ public:
      *  THIS METHOD IS USEFUL FOR STEP 1-3 BUT SHOULD NOT BE USED
      *  IN THE FINAL SUBMISSION.
      */
-    //int decode(ifstream& in) const;
-    //
-    //
-    //
+    
     void encodeTree(ofstream& out);
 
     void decodeTree(queue<unsigned char> encodedTree);

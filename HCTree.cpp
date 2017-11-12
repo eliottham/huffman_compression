@@ -158,8 +158,11 @@ void HCTree::encodeTree(ofstream& out)
       q.push(node->c1);
     }
   }
-  out.put((unsigned char) encodedTree.size());
-  //out.write((char*) &etsize, sizeof(etsize));
+  
+  //Tell the decoder how many bytes represent the header
+  int etsize = (int) encodedTree.size();
+  out.write((char*) &etsize, sizeof(etsize));
+
   for(unsigned int i = 0; i < encodedTree.size(); i++) {
     out.put(encodedTree[i]); //Print the structure of the tree
   }
@@ -198,13 +201,13 @@ int HCTree::decode(ifstream& in) const
  *  PRECONDITION: build() has been called, to create the coding
  *  tree, and initialize root pointer and leaves vector.
  */
-void HCTree::decode(BitInputStream& in, ofstream& out) const
+void HCTree::decode(BitInputStream& in, ofstream& out, int sigBits) const
 {
   HCNode* current = root;
   int nextBit;
 
-  while(in.notEOF()) {
-    for(unsigned int i = 0; i < 8; i++) {
+  //while(in.notEOF()) {
+    for(unsigned int i = 0; i < sigBits; i++) {
       nextBit = in.readBit();
 
       if(nextBit == 0) {
@@ -219,7 +222,7 @@ void HCTree::decode(BitInputStream& in, ofstream& out) const
         current = root;
       }
     }
-  }    
+  //}    
 }
 
 void HCTree::decodeTree(queue<unsigned char> encodedTree) 

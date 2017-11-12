@@ -74,7 +74,7 @@ int main(int argc, char* argv[]){
     nextChar = (unsigned char) nextByte;
     hct->encode(nextChar, *out); //write the encoded byte to the outfile
   }
-  //out->padLastByte();
+  out->padLastByte();
 
   //close the input and output files
   infile.close();

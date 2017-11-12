@@ -16,48 +16,48 @@ int main(int argc, char* argv[]){
     return -1;
   }
 
-  //open the input file
+  //Open the input file
   ifstream infile;
   infile.open(argv[1], ios::binary);
-  
+
+  //Get the last char which shows how many of the 0's in the last byte of encode are pad bits
+  infile.seekg(-1, ios_base::end);
+  int endPos = infile.tellg(); //Mark where the Huffman code ends
+  int numPadBits = infile.get();
+
+  infile.seekg(0, ios_base::beg); //Move stream back to the start of the file
+  //Get the first char which shows how many of the following bytes are for the header
+  //int headerSize = infile.get();
+  int headerSize;
+  infile.read((char*) &headerSize, sizeof(headerSize));
+
   int nextByte;
   unsigned char nextChar;
-
-  //Get the first char which shows how many of the following bytes are for the header
-  int headerSize;
-  int numPadBits;
-
- // numPadBits = infile.get();
-  //infile.read((char*) &headerSize, sizeof(headerSize));
-  headerSize = infile.get();
-
+  
   //Loop through the header to get the encoded tree structure
   queue<unsigned char> encodedTree;
+
   for(int i = 0; i < headerSize; i++) {
     nextByte = infile.get();
     nextChar = (unsigned char) nextByte;
     encodedTree.push(nextChar);
   }
+
+  int startPos = infile.tellg(); //Mark where the Huffman code begins
+  int sigBits = ((endPos - startPos) * 8) - numPadBits; //Let decode know how many bits to read
   
-  //build the huffman coding tree
+  //Build the huffman coding tree
   HCTree* hct = new HCTree();
-  hct->decodeTree(encodedTree);
+  hct->decodeTree(encodedTree); 
 
 
-  //open the output file
+  //Open the output file
   ofstream outfile;
   outfile.open(argv[2]);
 
   BitInputStream* in = new BitInputStream(infile);
-/*
-  int startPos = infile.tellg();
-  infile.seekg(ios_base::end);
-  int endPos = infile.tellg();
-  int numBits = endPos - startPos;
-  numBits = (numBits * 8) - numPadBits;
-  infile.seekg(startPos);
-*/
-  hct->decode(*in, outfile);
+
+  hct->decode(*in, outfile, sigBits);
   infile.close();
   outfile.close();
 

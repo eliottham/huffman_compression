@@ -37,19 +37,19 @@ void BitOutputStream::writeBit(unsigned char i) {
 }
 
 void BitOutputStream::padLastByte() {
+  
   int padbits = 8 - nbits;
   
   if(nbits != 0) {
     for(int i = 0; i < padbits; i++) {
       writeBit(0);
-      out.seekp(ios_base::beg);
-      out.put((unsigned char) padbits);
     }
+    out.put((unsigned char) padbits);
   }
   else {
-    out.seekp(ios_base::beg);
     out.put((unsigned char) 0);
   }
+
 }
   
       
