@@ -1,9 +1,12 @@
+#ifndef BITINPUTSTREAM_H
+#define BITINPUTSTREAM_H
+
 #include <iostream>
 using namespace std;
 
 class BitInputStream{
 private:
-    char buf; //one byte bufer of bits
+    unsigned char buf; //one byte bufer of bits
     int nbits; //how many bits have been read from buf
     istream & in;  //the input stream to use
 
@@ -20,4 +23,8 @@ public:
      * @return 0 if the bit read is 0
      */
     int readBit();
+
+    bool notEOF();
 };
+
+#endif

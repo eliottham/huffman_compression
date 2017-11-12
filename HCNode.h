@@ -17,13 +17,14 @@ public:
     HCNode* c0;  // pointer to '0' child
     HCNode* c1;  // pointer to '1' child
     HCNode* p;   // pointer to parent
+    bool isLeaf;   
 
     HCNode(int count,
       byte symbol,
       HCNode* c0 = 0,
       HCNode* c1 = 0,
       HCNode* p = 0)
-        : count(count), symbol(symbol), c0(c0), c1(c1), p(p) { }
+        : count(count), symbol(symbol), c0(c0), c1(c1), p(p), isLeaf(0) { }
 
     /** Less-than comparison, so HCNodes will work in std::priority_queue
      *  We want small counts to have high priority.

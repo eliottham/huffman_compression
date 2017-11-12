@@ -1,8 +1,11 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
+#include <queue>
 #include "HCNode.h"
 #include "HCTree.h"
+#include <stdio.h>
 using namespace std;
 
 
@@ -15,30 +18,47 @@ int main(int argc, char* argv[]){
 
   //open the input file
   ifstream infile;
-  infile.open(argv[1]);
+  infile.open(argv[1], ios::binary);
+  
+  int nextByte;
+  unsigned char nextChar;
 
-  //read the file header, and reconstruct the huffman coding tree
-  vector<int> freqs(256,0); //frequencies of each byte
-  string line; //string used to obtain each byte per line
- 
-  for(unsigned int i = 0; i < freqs.size(); i++){
-    getline(infile, line);
-    freqs[i] = stoi(line); //get the freq of the corresponding byte
+  //Get the first char which shows how many of the following bytes are for the header
+  int headerSize;
+  int numPadBits;
+
+ // numPadBits = infile.get();
+  //infile.read((char*) &headerSize, sizeof(headerSize));
+  headerSize = infile.get();
+
+  //Loop through the header to get the encoded tree structure
+  queue<unsigned char> encodedTree;
+  for(int i = 0; i < headerSize; i++) {
+    nextByte = infile.get();
+    nextChar = (unsigned char) nextByte;
+    encodedTree.push(nextChar);
   }
   
   //build the huffman coding tree
   HCTree* hct = new HCTree();
-  hct->build(freqs);
+  hct->decodeTree(encodedTree);
+
 
   //open the output file
   ofstream outfile;
   outfile.open(argv[2]);
 
-  //decode the bits from the input file and write to the output file
-  while(infile.peek() != EOF) {
-    outfile << (unsigned char) hct->decode(infile);
-  }
-
+  BitInputStream* in = new BitInputStream(infile);
+/*
+  int startPos = infile.tellg();
+  infile.seekg(ios_base::end);
+  int endPos = infile.tellg();
+  int numBits = endPos - startPos;
+  numBits = (numBits * 8) - numPadBits;
+  infile.seekg(startPos);
+*/
+  hct->decode(*in, outfile);
   infile.close();
   outfile.close();
+
 }

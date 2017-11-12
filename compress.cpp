@@ -1,9 +1,12 @@
 #include <fstream>
 #include <iostream>
+#include <algorithm>
+#include <vector>
 #include "HCNode.h"
 #include "HCTree.h"
 using namespace std;
 
+bool sortHelper(const pair<unsigned char, int> &pair1, const pair<unsigned char, int> &pair2);
 
 int main(int argc, char* argv[]){
   //Check if contains proper amount of arguments
@@ -11,7 +14,7 @@ int main(int argc, char* argv[]){
     cerr << "Expected arguments: ./compress infile outfile" << endl;
     return -1;
   }
-
+   //TODO: empty file
   //TODO:Check for if file contains only one character repeated many times
   
   //open the infile to read the contents 
@@ -50,26 +53,38 @@ int main(int argc, char* argv[]){
   //construct the Huffman coding tree
   hct->build(freqs);
 
-  //open the output file for writing
-  ofstream outfile;
-  outfile.open(argv[2]);
-  
+/* Inefficient Header  
   //write the file header to the output file
   for(unsigned int i = 0; i < freqs.size(); i++){
-    outfile << freqs[i] << endl;
+    outfile << freqs[i] << endl;/
     //outfile.write((char*) &freqs[i], sizeof(freqs[i]));
   }
+*/
 
+    //open the output file for writing
+  ofstream outfile;
+  outfile.open(argv[2], ios::binary);
+  hct->encodeTree(outfile);
+
+  BitOutputStream* out = new BitOutputStream(outfile);
   //translate each byte from input file into its code and append to outfile
   infile.open(argv[1], ios::binary);
  
   while((nextByte = infile.get()) != EOF) {
     nextChar = (unsigned char) nextByte;
-    hct->encode(nextChar, outfile); //write the encoded byte to the outfile
+    hct->encode(nextChar, *out); //write the encoded byte to the outfile
   }
+  //out->padLastByte();
 
   //close the input and output files
   infile.close();
   outfile.close();
 
+}
+
+/*Helper function to sort out the frequencies of the chars from lowest
+  to highest frequency*/
+bool sortHelper(const pair<unsigned char, int> &pair1, const pair<unsigned char, int> &pair2)
+{
+  return pair1.second < pair2.second;
 }

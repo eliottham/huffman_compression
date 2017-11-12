@@ -1,17 +1,26 @@
+/*PA2
+ *Name 1: Khelsey Gozum // A12070231
+ *Name 2: Eliott Ham // A13186685
+ *Date: November 10, 2017
+ *Overview of BitInputStream.cpp: Implentation of bitwise file I/O, using 
+ *  iostream classes to read one bit at a time.
+ */
+
+
+
+
 #include <iostream>
 #include "BitInputStream.h"
 #include "HCTree.h"
 using namespace std;
 
 /**Constructor*/
-BitInputStream(istream & is) : in(is){
-        buf = 0; //clear buffer
-        nbits = 0; //initialize bit index
-}
+BitInputStream::BitInputStream(istream & is) : in(is), buf(0), nbits(8){}
 
 /** Fill the buffer from the input */
 void BitInputStream::fill() {
     buf = in.get();
+    //cout << "buf = " << buf << endl;
     nbits = 0;
 }
 
@@ -29,14 +38,15 @@ int BitInputStream::readBit() {
     //Get the bit at the appropriate location in the bit
     //buffer, and return the appropriate int
     int bit;
-    bit = buf & 1;
-
-    //TODO: idk here
-    buf = (buf >> nbits);
-
+    bit = (buf >> nbits )& 1;
+    //cout <<  "bit = " << bit <<endl; 
     //increment the index
     nbits++;
-
+    //cout << "nbits = " << nbits << endl;
     return bit;
 
+}
+
+bool BitInputStream::notEOF() {
+  return in.peek() != EOF;
 }

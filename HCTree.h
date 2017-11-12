@@ -1,13 +1,19 @@
+/*PA2
+ *Name 1: Khelsey Gozum // A12070231
+ *Name 2: Eliott Ham // A13186685
+ *Date: November 10, 2017
+ *Overview of HCTree.h: setting up the framwork  
+ *  to create a Huffman coding trie, implementing methods
+ *  to build the tree, encode the tree, and decode the tree. 
+ */
 #ifndef HCTREE_H
 #define HCTREE_H
-
 #include <queue>
 #include <vector>
 #include <fstream>
 #include "HCNode.h"
-//#include "BitInputStream.h"
-//#include "BitOutputStream.h"
-
+#include "BitInputStream.h"
+#include "BitOutputStream.h"
 using namespace std;
 
 /** A 'function class' for use as the Compare class in a
@@ -53,7 +59,7 @@ public:
      *  PRECONDITION: build() has been called, to create the coding
      *  tree, and initialize root pointer and leaves vector.
      */
-    //void encode(byte symbol, BitOutputStream& out) const;
+    void encode(byte symbol, BitOutputStream& out) const;
 
     /** Write to the given ofstream
      *  the sequence of bits (as ASCII) coding the given symbol.
@@ -62,14 +68,14 @@ public:
      *  THIS METHOD IS USEFUL FOR STEP 1-3 BUT SHOULD NOT 
      *  BE USED IN THE FINAL SUBMISSION.
      */
-    void encode(byte symbol, ofstream& out) const;
+    //void encode(byte symbol, ofstream& out) const;
 
 
     /** Return symbol coded in the next sequence of bits from the stream.
      *  PRECONDITION: build() has been called, to create the coding
      *  tree, and initialize root pointer and leaves vector.
      */
-    //int decode(BitInputStream& in) const;
+    void decode(BitInputStream& in, ofstream& out) const;
 
     /** Return the symbol coded in the next sequence of bits (represented as 
      *  ASCII text) from the ifstream.
@@ -78,9 +84,13 @@ public:
      *  THIS METHOD IS USEFUL FOR STEP 1-3 BUT SHOULD NOT BE USED
      *  IN THE FINAL SUBMISSION.
      */
-    int decode(ifstream& in) const;
+    //int decode(ifstream& in) const;
     //
     //
+    //
+    void encodeTree(ofstream& out);
+
+    void decodeTree(queue<unsigned char> encodedTree);
    
 
 

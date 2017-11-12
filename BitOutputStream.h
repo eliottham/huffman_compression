@@ -1,3 +1,5 @@
+#ifndef BITOUTPUTSTREAM_H
+#define BITOUTPUTSTREAM_H
 #include <iostream>
 using namespace std;
 
@@ -18,6 +20,9 @@ public:
      * the bit buffer, and increment the bit buffer index.
      * But flush the buffer first, if it is full. */
 
-    void writeBit(int i);
+    void writeBit(unsigned char i);
+
+    void padLastByte();
 
 };
+#endif

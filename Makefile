@@ -7,11 +7,11 @@ LDFLAGS=-g
 all: compress uncompress
 
 HCTree: HCTree.o
-#compress: BitInputStream.o BitOutputStream.o HCNode.o HCTree.o
-compress: HCNode.o HCTree.o
+compress: BitInputStream.o BitOutputStream.o HCNode.o HCTree.o
+#compress: HCNode.o HCTree.o
 
-#uncompress: BitInputStream.o BitOutputStream.o HCNode.o HCTree.o
-uncompress: HCNode.o HCTree.o
+uncompress: BitInputStream.o BitOutputStream.o HCNode.o HCTree.o
+#uncompress: HCNode.o HCTree.o
 
 HCTree.o:  HCNode.h HCTree.h
 
