@@ -1,9 +1,7 @@
-/*PA2
- *Name 1: Khelsey Gozum // A12070231
- *Name 2: Eliott Ham // A13186685
- *Date: November 10, 2017
- *Overview of BitOutputStream.cpp: Implementation of bitwise I/O, using 
- *  iostream classes to write one bit at a time
+/*
+ * Overview of BitOutputStream.cpp: Implementation of bitwise I/O, using 
+ * iostream classes to write one bit at a time to a eight bit buffer
+ * and flushes when the buffer is full.
  */
 
 #include <iostream>
@@ -11,45 +9,46 @@
 #include "BitOutputStream.h"
 using namespace std;
 
-//Constructor
+/**Constructor**/
 BitOutputStream::BitOutputStream(ostream & os) : out(os), buf(0), nbits(0){}
 
-/** Send the buffer to the output, and clear it*/
+/** Send the buffer to the output, and clear it**/
 void BitOutputStream::flush() {
   out.put(buf);
-  //out.write((char*) &buf, sizeof(buf));
   out.flush();
   buf = nbits = 0;
 
 }
-/** Write the least significant bit of the argument to
-     * the bit buffer, and increment the bit buffer index.
-     * But flush the buffer first, if it is full. */
-void BitOutputStream::writeBit(unsigned char i) {
-  //Write the least significant bit of i into the buffer at the current index
-  buf = (buf & ~(1 << nbits)) | (i << nbits);
-  nbits++;
 
-    //Check if the buffer is full, flush if so
+/** Write the least significant bit of the argument to the bit buffer, and 
+ * increment the bit buffer index. Flush the buffer first, if it is full. */
+void BitOutputStream::writeBit(unsigned char i) {
+  // write the least significant bit of i into the buffer at the current index
+  buf = (buf & ~(1 << nbits)) | (i << nbits);
+  
+  nbits++; // increment the bit buffer index
+
+  // check if the buffer is full, flush if so
   if(nbits == 8){
     flush();
   }
 }
 
+/**Helper function to pad the remaining bits in the buffer if its not fully
+ *   eight bits so it can be flushed out */
 void BitOutputStream::padLastByte() {
+  int padbits = 8 - nbits; //get the number of pad bits 
   
-  int padbits = 8 - nbits;
-  
+  // pad the amount of bits into the buffer, if 0 indicates just been flushed
   if(nbits != 0) {
     for(int i = 0; i < padbits; i++) {
       writeBit(0);
     }
-    out.put((unsigned char) padbits);
+    out.put((unsigned char) padbits); // add padbits to the stream
   }
   else {
-    out.put((unsigned char) 0);
+    out.put((unsigned char) 0); // add to the stream
   }
-
 }
   
       

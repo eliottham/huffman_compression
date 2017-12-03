@@ -1,11 +1,9 @@
-/*PA2
- *Name 1: Khelsey Gozum // A12070231
- *Name 2: Eliott Ham // A13186685
- *Date: November 10, 2017
- *Overview of HCTree.h: setting up the framwork  
- *  to create a Huffman coding trie, implementing methods
- *  to build the tree, encode the tree, and decode the tree. 
+/*
+ * Overview of HCTree.h: setting up the framwork  
+ * to create a Huffman coding trie, implementing methods
+ * to build the tree, encode the tree, and decode the tree. 
  */
+
 #ifndef HCTREE_H
 #define HCTREE_H
 #include <queue>
@@ -84,9 +82,11 @@ public:
      *  THIS METHOD IS USEFUL FOR STEP 1-3 BUT SHOULD NOT BE USED
      *  IN THE FINAL SUBMISSION.
      */
-    
+
+   /**Create an encoded version of the tree as the header of the compressed file*/ 
     void encodeTree(ofstream& out);
 
+    /**Decode the header created by encodedTree**/
     void decodeTree(queue<unsigned char> encodedTree);
    
 

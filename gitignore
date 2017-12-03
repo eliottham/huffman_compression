@@ -4,8 +4,6 @@
 # Except for these:
 !.gitignore
 !Makefile
-!refcompress
-!refuncompress
 !*.h
 !*.cpp
 !*.pdf

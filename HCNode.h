@@ -1,10 +1,12 @@
+/*
+ * Overview of HCNode.h: Sets up the method declarations and framework for a
+ * HCNode to used to create a huffman tree
+ */ 
+
 #ifndef HCNODE_H
 #define HCNODE_H
-
 #include <iostream>
-
 typedef unsigned char byte;
-
 using namespace std;
 
 /** A class, instances of which are nodes in an HCTree.

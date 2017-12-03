@@ -1,0 +1,26 @@
+Overview:
+	This program is utilizes the Huffman Coding Trie to compress/uncompress files.
+	Compression occurs when we translate the Huffman code with bitwise I/O.
+
+Compilation:
+	To compile this program type "make" in the directory of this project.
+
+Functionionality:
+	compress.cpp: 
+		./compress infile outfile
+		1) Take in an input file to compress and an output file to write to.
+		2) Read the contents of the infile and construct a Huffman code for
+		   the contents of that file.
+		3) Write the header for tree construction and a compressed bitwise
+		   version of the code to the outfile.
+
+	uncompress.cpp:
+		./uncompress infile outfile
+		1) Take in a compressed infile (outfile of compress).
+		2) Use the contents of that file to reconstruct the original
+		   file using the correct Huffman Coding Trie and code.
+		3) Write the results to the outfile.
+
+Notes:
+	A separate git account was used during the creation of this project to keep
+	it private while in production.
